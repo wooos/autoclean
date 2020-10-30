@@ -8,4 +8,4 @@ if __name__ == '__main__':
     else:
         config_file = sys.argv[1]
     ca = CleanAction(config_file)
-    ca.run()
+    ca.cron()

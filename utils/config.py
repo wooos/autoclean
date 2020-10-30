@@ -28,6 +28,10 @@ class CleanConfig(object):
             self.config_data = yaml.safe_load(config_file.read())
 
     @property
+    def schedule(self):
+        return self.config_data.get('autoclean').get('schedule')
+
+    @property
     def paths(self):
         clean_paths = []
         for clean_path in self.config_data.get('autoclean').get('paths'):

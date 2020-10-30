@@ -6,6 +6,7 @@ According config file,  gzip file or remove file.
 
 ```yaml
 autoclean:
+  schedule: "* * * * *"
   paths:
     - dirctory: "/data/logs"  # absolute path
       filename: "*.log"       # filename (eg test.log *.log)

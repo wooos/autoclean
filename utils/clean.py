@@ -3,6 +3,7 @@ import glob
 import gzip
 import logging
 from datetime import datetime, timedelta
+from apscheduler.schedulers.blocking import BlockingScheduler
 from .config import CleanConfig
 
 logging.basicConfig(level=logging.INFO, format='[%(levelname)s][%(asctime)s] %(message)s')
@@ -27,19 +28,25 @@ class CleanAction(object):
             now_time = datetime.utcnow()
             if mtime + timedelta(days=clean_path.expire) < now_time:
                 if clean_path.command == 'gzip':
-                    log.info('gzip file: {}'.format(filename))
+                    log.info('Clean file: {}, command: gzip'.format(filename))
                     with open(filename, 'rb') as f:
                         g = gzip.GzipFile(mode='wb', compresslevel=9, fileobj=open('{}.gz'.format(filename), 'wb'))
                         g.write(f.read())
                         g.close()
                     os.remove(filename)
                 elif clean_path.command == 'remove':
-                    log.info('remove file: {}'.format(filename))
+                    log.info('Clean file: {}, command: remove'.format(filename))
                     os.remove(filename)
                 else:
                     exit('Unknown command: {}, only support gzip and remove'.format(clean_path.command))
-        log.info('Completion')
 
     def run(self):
         for clean_path in self.clean_config.paths:
             self.clean(clean_path)
+
+    def cron(self):
+        scheduler = BlockingScheduler()
+        scheduler_l = self.clean_config.schedule.split()
+        scheduler.add_job(self.run, 'cron', minute=scheduler_l[0], hour=scheduler_l[1],
+                          day=scheduler_l[2], month=scheduler_l[3], week=scheduler_l[4])
+        scheduler.start()
