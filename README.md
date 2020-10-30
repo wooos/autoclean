@@ -1,6 +1,6 @@
 # AutoClean
 
-According config file,  gzip file or rm file.
+According config file,  gzip file or remove file.
 
 ## Configuration
 

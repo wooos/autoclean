@@ -33,7 +33,7 @@ class CleanAction(object):
                         g.write(f.read())
                         g.close()
                     os.remove(filename)
-                elif clean_path.command == 'rm':
+                elif clean_path.command == 'remove':
                     log.info('remove file: {}'.format(filename))
                     os.remove(filename)
                 else:
