@@ -30,6 +30,7 @@ Create `autoclean.yaml` config file.
 
 ```
 autoclean:
+  schedule: "* * * * *"
   paths:
     - directory: /data/logs
       filename: *.log
