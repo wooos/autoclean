@@ -28,6 +28,8 @@ class CleanAction(object):
             now_time = datetime.utcnow()
             if mtime + timedelta(days=clean_path.expire) < now_time:
                 if clean_path.command == 'gzip':
+                    if filename.endswith('.gz'):
+                        continue
                     log.info('Clean file: {}, command: gzip'.format(filename))
                     with open(filename, 'rb') as f:
                         g = gzip.GzipFile(mode='wb', compresslevel=9, fileobj=open('{}.gz'.format(filename), 'wb'))
